@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
+import 'package:onboard_homepages/home/homePageView.dart';
 import 'package:onboard_homepages/onboard/onboardModel.dart';
 
 class onboard_view extends StatefulWidget {
@@ -54,7 +55,10 @@ class _onboard_viewState extends State<onboard_view> {
           borderRadius: BorderRadius.circular(15),
           color: context.appTheme.primaryColor),
       child: TextButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => homePage()));
+        },
         child: Text(
           models[0].buttonText,
           style: TextStyle(

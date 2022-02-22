@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:kartal/src/context_extension.dart';
 import 'package:onboard_homepages/home/homePageModels.dart';
+import 'package:onboard_homepages/home/post_model.dart';
+import 'package:onboard_homepages/home/post_service.dart';
 
 class homePage extends StatefulWidget {
   const homePage({Key? key}) : super(key: key);
@@ -11,6 +13,26 @@ class homePage extends StatefulWidget {
 }
 
 class _homePageState extends State<homePage> {
+  PostService _postService = PostService();
+  List<PostModel>? _postModel;
+  bool isLoading = false;
+  void changeLoading() {
+    setState(() {
+      isLoading = !isLoading;
+    });
+  }
+
+  Future<void> init() async {
+    _postModel = await _postService.fetchPost();
+    changeLoading();
+  }
+
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -32,7 +54,7 @@ class _homePageState extends State<homePage> {
                   height: context.dynamicHeight(0.02),
                 ),
                 sub_cleaned_Row(context),
-                listViewBuilder()
+                isLoading ? listViewBuilder() : const SizedBox(),
               ],
             ),
           ),
@@ -114,46 +136,53 @@ class _homePageState extends State<homePage> {
 
   ListView listViewBuilder() {
     return ListView.builder(
-        physics: ScrollPhysics(),
-        shrinkWrap: true,
-        scrollDirection: Axis.vertical,
-        itemCount: cardContents.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 5),
-            child: Card(
-              margin: EdgeInsets.symmetric(horizontal: 0),
-              borderOnForeground: true,
-              elevation: 10,
-              shape: RoundedRectangleBorder(
-                borderRadius: context.normalBorderRadius,
-              ),
-              color: context.appTheme.primaryColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8),
+      physics: ScrollPhysics(),
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      itemCount: _postModel?.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 5),
+          child: Card(
+            margin: EdgeInsets.symmetric(horizontal: 0),
+            borderOnForeground: true,
+            elevation: 10,
+            shape: RoundedRectangleBorder(
+              borderRadius: context.normalBorderRadius,
+            ),
+            color: context.appTheme.primaryColor,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Container(
+                    width: context.dynamicWidth(0.65),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(cardContents[index].title),
-                        Text(cardContents[index].url)
+                        Text(_postModel?[index].title ?? ""),
+                        Text(_postModel?[index].completed.toString() ?? "")
                       ],
                     ),
                   ),
-                  Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7),
-                        color: Colors.blue[50],
-                      ),
-                      margin: EdgeInsets.all(15),
-                      child: IconButton(
-                          onPressed: () {}, icon: Icon(Icons.delete)))
-                ],
-              ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7),
+                    color: Colors.blue[50],
+                  ),
+                  margin: EdgeInsets.all(15),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.delete),
+                  ),
+                )
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

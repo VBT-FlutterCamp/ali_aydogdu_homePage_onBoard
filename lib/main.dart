@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:onboard_homepages/home/homePage.dart';
+import 'package:onboard_homepages/home/homePageView.dart';
 import 'package:onboard_homepages/onboard/onboardPage.dart';
 
 void main() {
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.white,
         primarySwatch: Colors.blue,
       ),
-      home: const homePage(),
+      home: const onboard_view(),
     );
   }
 }

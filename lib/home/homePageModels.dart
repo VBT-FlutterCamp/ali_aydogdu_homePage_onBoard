@@ -1,4 +1,4 @@
-import 'package:onboard_homepages/home/homePage.dart';
+import 'package:onboard_homepages/home/homePageView.dart';
 
 class homePageModels {
   String firstText;
@@ -26,7 +26,7 @@ class cardStrings {
   cardStrings({required this.title, required this.url});
 }
 
-List<cardStrings> cardContents = [
+/*List<cardStrings> cardContents = [
   cardStrings(title: "Coding Journey", url: "www.coding-journey.io"),
   cardStrings(title: "Smashing Magazine", url: "https://www.smashingmagazine"),
   cardStrings(title: "UX Labs", url: "https://uxlabs.co"),
@@ -34,4 +34,4 @@ List<cardStrings> cardContents = [
       title: "The Netlify Blog", url: "https://www.netlify.com/tags/newsl"),
   cardStrings(title: "Student Life", url: "https://ulife.com/student-life/"),
   cardStrings(title: "Hello.io", url: "https://hello.io/job-postings/"),
-];
+];*/
